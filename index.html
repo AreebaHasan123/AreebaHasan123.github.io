@@ -1,149 +1,6 @@
-<!--
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style> /* set the CSS */
 
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-
-}
-
-
-</style>
-<body>
-
-//load the d3.js library -	
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
-
-var div = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
-// set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 50, left: 70},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-// parse the date / time
-
-
-// set the ranges
-var x = d3.scaleLinear().range([0, width]);
-var y = d3.scaleLinear().range([height, 0]);
-
-// define the line
-var valueline = d3.line()
-    .x(function(d) { return x(d.HappinessScore); })
-    .y(function(d) { return y(d.Economy); });
-
-// append the svg obgect to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-
-// Get the data
-
-d3.csv("data1.csv", function(error, data) {
-  if (error) throw error;
-
-  // format the data
-
-
-  // Scale the range of the data
-  x.domain(d3.extent(data, function(d) { return d.month; }));
-  y.domain([0, d3.max(data, function(d) { return d.sales; })]);
-
-  // Add the valueline path.
-  svg.append("path")
-      .data([data])
-      .attr("class", "line")
-      .attr("d", valueline);
-  
-
-	  svg.selectAll(".dot")
-	  .data(data)
-	  .enter().append("circle")
-      .on("click", removeElem) 
-	  .attr('class', 'datapoint')
-	  .attr('cx', function(d) { return x(d.month); })
-	  .attr('cy', function(d) { return y(d.sales); })
-	  .attr('r', 6)
-	  .attr('fill', 'white')
-	  .attr('stroke', 'steelblue')
-      .style("opacity", .8) 
-	  .attr('stroke-width', '3')
-	  .on('mouseover', function(d){
-        d3.select(this).attr("r", 10).style("fill", "red");
-        d3.select(this).transition()
-                .duration('100')
-                .attr("r", 7);
-        div.transition()        
-            .duration(70)      
-            .style("opacity", .7)
-
-             ;      
-             div.html("Your happiness score: " + d3.format(".2f")(d.month)+" with Economy GDB: "+d3.format(".2f")(d.sales))
-               .style("left", (d3.event.pageX + 10) + "px")
-               .style("top", (d3.event.pageY - 15) + "px");   
-      })
-	  .on("mouseout", function(d) {       
-        d3.select(this).attr("r", 5.5).style("fill", "#fff8ee");
-        div.transition()        
-            .duration(200)      
-            .style("opacity", 0);   
-    });
-
-  // Add the x Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-
-  // text label for the x axis
-  svg.append("text")             
-      .attr("transform",
-            "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 20) + ")")
-      .style("text-anchor", "middle")
-      .text("Happiness Score");
-
-  // Add the y Axis
-  svg.append("g")
-      .call(d3.axisLeft(y));
-
-  // text label for the y axis
-  svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Economy (GDP Per Capita)");
-
-	  
-
-});
-
-function removeElem(d){
-    d3.event.stopPropagation();
-    d3.select(this)
-    .remove();
-}
-</script>
-</body>
-</html>
--->
-
-<!DOCTYPE html>
-<meta charset="utf-8">
 <style> /* set the CSS */
 
 body { font: 12px Arial;}
@@ -169,9 +26,14 @@ path {
 }
 
 </style>
+
 <body>
 
-//load the d3.js library 
+<p>Percentages of Children(Age 6-17) Involved in ExtraCurriculars</p>
+<a href="https://areebahasan123.github.io/final/">Sports</a>
+<a href="https://areebahasan123.github.io/final2/">Clubs</a>
+<a href="https://areebahasan123.github.io/final3/">Taking Lessons</a>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 <script>
@@ -243,7 +105,7 @@ d3.csv("data1.csv", function(error, data) {
         // Add the Legend
         svg.append("text")
             .attr("x", (legendSpace/2)+i*legendSpace)  // space legend
-            .attr("y", height + (margin.bottom/2)+ 5)
+            .attr("y", height + (margin.bottom/2)+ 35)
             .attr("class", "legend")    // style the legend
             .style("fill", function() { // Add the colours dynamically
                 return d.color = color(d.key); })
@@ -266,13 +128,31 @@ d3.csv("data1.csv", function(error, data) {
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
+  
+      svg.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 15) + ")")
+      .style("text-anchor", "middle")
+      .text("Year");
+
+    
 
   // Add the Y Axis
   svg.append("g")
       .attr("class", "axis")
       .call(d3.axisLeft(y));
-      
+
+      svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Percentages");
+
 });
 
 </script>
 </body>
+</html>
